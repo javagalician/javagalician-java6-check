@@ -24,11 +24,24 @@ public class Check {
             System.out.println("----------------------------------");
             
             System.out.println();
-            
-            final Locale[] availableLocales = Locale.getAvailableLocales();
-            System.out.println("Available locales are: " + Arrays.asList(availableLocales));
+
             boolean glESContained = false;
             boolean glESCorrect = true;
+            
+            System.out.println("Checking environment...");
+
+            boolean vmVersionOK = true;
+            try {
+                Class.forName("java.util.spi.LocaleServiceProvider");
+            } catch (Exception e) {
+                vmVersionOK = false;
+            }
+
+            System.out.println("  > Checking Java version: [" + System.getProperty("java.version") + "]  " + (vmVersionOK? "[OK]" : "[FAIL]"));
+            
+            System.out.println("---");
+            final Locale[] availableLocales = Locale.getAvailableLocales();
+            System.out.println("Available locales are: " + Arrays.asList(availableLocales));
             for (final Locale locale : availableLocales) {
                 if ("ES".equals(locale.getCountry()) && "gl".equals(locale.getLanguage())) {
                     glESContained = true;
@@ -168,20 +181,26 @@ public class Check {
             
 
             System.out.println();
-            if (glESContained) {
-                if (glESCorrect) {
-                    System.out.println("---------------------------------------------");
-                    System.out.println("GALICIAN LOCALE (gl_ES) AVAILABLE AND CORRECT");
-                    System.out.println("---------------------------------------------");
-                } else {
-                    System.out.println("---------------------------------------------------");
-                    System.out.println("GALICIAN LOCALE (gl_ES) AVAILABLE BUT NOT CORRECT!!");
-                    System.out.println("---------------------------------------------------");
-                }
+            if (!vmVersionOK) {
+                System.out.println("-----------------------------------------------------");
+                System.out.println("BAD JAVA VERSION: JAVAGALICIAN NEEDS JAVA 6 OR HIGHER");
+                System.out.println("-----------------------------------------------------");
             } else {
-                System.out.println("---------------------------------------");
-                System.out.println("GALICIAN LOCALE (gl_ES) *NOT* AVAILABLE");
-                System.out.println("---------------------------------------");
+                if (glESContained) {
+                    if (glESCorrect) {
+                        System.out.println("---------------------------------------------");
+                        System.out.println("GALICIAN LOCALE (gl_ES) AVAILABLE AND CORRECT");
+                        System.out.println("---------------------------------------------");
+                    } else {
+                        System.out.println("---------------------------------------------------");
+                        System.out.println("GALICIAN LOCALE (gl_ES) AVAILABLE BUT NOT CORRECT!!");
+                        System.out.println("---------------------------------------------------");
+                    }
+                } else {
+                    System.out.println("---------------------------------------");
+                    System.out.println("GALICIAN LOCALE (gl_ES) *NOT* AVAILABLE");
+                    System.out.println("---------------------------------------");
+                }
             }
             
             
