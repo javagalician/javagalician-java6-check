@@ -1,3 +1,22 @@
+/*
+ * =============================================================================
+ * 
+ *   Copyright (c) 2009, The JAVAGALICIAN team (http://www.javagalician.org)
+ * 
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ * 
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ * 
+ * =============================================================================
+ */
 package org.javagalician.java6.check;
 
 import java.text.Collator;
@@ -42,7 +61,8 @@ public class Check {
             System.out.println("---");
             final Locale[] availableLocales = Locale.getAvailableLocales();
             System.out.println("Available locales are: " + Arrays.asList(availableLocales));
-            for (final Locale locale : availableLocales) {
+            for (int i = 0; i < availableLocales.length; i++) {
+                final Locale locale = availableLocales[i];
                 if ("ES".equals(locale.getCountry()) && "gl".equals(locale.getLanguage())) {
                     glESContained = true;
                 }
@@ -123,8 +143,8 @@ public class Check {
             System.out.println("---");
             System.out.println("Checking collation...");
             
-            final List<String> words = Arrays.asList(new String[] {"\u00C1tono","\u00C1tomo", "at\u00F3nito", "at\u00F3mico"});
-            final List<String> desiredWords = Arrays.asList(new String[] {"at\u00F3mico", "\u00C1tomo", "at\u00F3nito", "\u00C1tono"});
+            final List words = Arrays.asList(new String[] {"\u00C1tono","\u00C1tomo", "at\u00F3nito", "at\u00F3mico"});
+            final List desiredWords = Arrays.asList(new String[] {"at\u00F3mico", "\u00C1tomo", "at\u00F3nito", "\u00C1tono"});
             
             final Collator collator = Collator.getInstance(gl);
             Collections.sort(words, collator);
@@ -147,15 +167,15 @@ public class Check {
             final String country1 = esAR.getDisplayCountry(gl);
             final String country2 = deDE.getDisplayCountry(gl);
             final String country3 = noNO.getDisplayCountry(gl);
-            final List<String> countries = Arrays.asList(new String[] { country1, country2, country3 });
-            final List<String> desCountries = Arrays.asList(new String[] { "Arxentina", "Alema\u00F1a", "Noruega" });
+            final List countries = Arrays.asList(new String[] { country1, country2, country3 });
+            final List desCountries = Arrays.asList(new String[] { "Arxentina", "Alema\u00F1a", "Noruega" });
             final boolean countriesOK = countries.equals(desCountries);
             
             final String lang1 = esAR.getDisplayLanguage(gl);
             final String lang2 = deDE.getDisplayLanguage(gl);
             final String lang3 = noNO.getDisplayLanguage(gl);
-            final List<String> langs = Arrays.asList(new String[] { lang1, lang2, lang3 });
-            final List<String> desLangs = Arrays.asList(new String[] { "castel\u00E1n", "alem\u00E1n", "noruegu\u00E9s" });
+            final List langs = Arrays.asList(new String[] { lang1, lang2, lang3 });
+            final List desLangs = Arrays.asList(new String[] { "castel\u00E1n", "alem\u00E1n", "noruegu\u00E9s" });
             final boolean langsOK = langs.equals(desLangs);
 
             glESCorrect = glESCorrect && countriesOK && langsOK;
