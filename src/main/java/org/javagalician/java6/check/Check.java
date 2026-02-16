@@ -21,6 +21,8 @@ package org.javagalician.java6.check;
 
 import java.text.Collator;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -28,6 +30,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import sun.util.resources.LocaleData;
 
 public class Check {
 
@@ -168,8 +172,27 @@ public class Check {
                 System.out.println("  > Checking decimal number format: [" + nFormat + "]  " + (nFormatOK? "[OK]" : "[FAIL]"));
                 System.out.println("  > Checking currency format: [" + nCurrencyFormat + "]  " + (nCurrencyFormatOK? "[OK]" : "[FAIL]"));
 
-                
-                
+                /*
+                jdk1.7.0_79/src.zip!/java/text/DecimalFormatSymbols.java:547
+
+                decimalSeparator = numberElements[0].charAt(0);
+                groupingSeparator = numberElements[1].charAt(0);
+                 */
+
+                String[] numberElements = LocaleData.getNumberFormatData(locales[i]).getStringArray("NumberElements");
+                System.out.println("decimalSeparator: "+numberElements[0].charAt(0));
+                System.out.println("groupSeparator: "+numberElements[1].charAt(0));
+
+                DecimalFormatSymbols symbols = new DecimalFormatSymbols(locales[i]);
+                DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
+
+                final String nFormat2 = decimalFormat.format(n);
+
+                final boolean nFormatOK2 = nDesiredFormat.equals(nFormat2);
+
+                correct[i] = correct[i] && nFormatOK2;
+
+                System.out.println("  > Checking decimal number format: [" + nFormat2 + "]  " + (nFormatOK2? "[OK]" : "[FAIL]"));
                 
                 System.out.println("---");
                 System.out.println("Checking collation...");
